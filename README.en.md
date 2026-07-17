@@ -32,7 +32,7 @@ external generator (Nano Banana / PixVerse / …)
 ### macOS: open the Studio launcher
 
 1. Install [Node.js 22 or newer](https://nodejs.org/en/download).
-2. Download and extract this repository.
+2. [Download Shitate as a ZIP](https://github.com/Takamasa045/shitate/archive/refs/heads/main.zip) and extract it.
 3. Control-click **`Shitate Studio.command`**, choose **Open**, and confirm once.
 
 The launcher installs missing dependencies, starts the local Studio, and opens the browser automatically. Character data stays inside this repository. See [QUICKSTART.md](QUICKSTART.md) for troubleshooting.
@@ -94,7 +94,8 @@ characters/<id>/
 
 ## License
 
-To be selected before public release. No permission to reuse, modify, or redistribute the repository is granted yet.
+Shitate's source code, documentation, and the distributed sample configuration and prompts are available under the [MIT License](LICENSE).
+Images, writing, or other material added by users remain subject to the rights and service terms that apply to those materials.
 
 ## Contributing
 
