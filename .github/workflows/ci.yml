@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: test · typecheck · lint · doctor · compile · e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10.32.1
+          run_install: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit production dependencies (high severity gate)
+        run: pnpm audit --prod --audit-level high
+
+      - name: Unit and integration tests
+        run: pnpm test
+
+      - name: Distribution privacy gate
+        run: pnpm distribution:check
+
+      - name: Studio launcher coverage (80% minimum)
+        run: pnpm test:launcher:coverage
+
+      - name: Studio mutation coverage (80% minimum)
+        run: pnpm test:coverage
+
+      - name: Typecheck
+        run: pnpm typecheck
+
+      - name: forge lint
+        run: pnpm forge lint
+
+      - name: forge doctor (info only, strict warns allowed)
+        run: pnpm forge doctor
+
+      - name: compile smoke test (all variants, dry-run)
+        run: node scripts/ci/compile-all.mjs
+
+      - name: Install Chromium
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Studio E2E
+        run: pnpm test:e2e
+
+      - name: Upload Playwright artifacts
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: playwright-report
+          path: |
+            playwright-report/
+            test-results/
+          if-no-files-found: ignore
+          retention-days: 14

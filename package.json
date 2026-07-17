@@ -1,0 +1,54 @@
+{
+  "name": "shitate",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.32.1",
+  "description": "Shitate: local character design and prompt workspace",
+  "type": "module",
+  "scripts": {
+    "forge": "tsx scripts/forge/cli.ts",
+    "doctor": "tsx scripts/forge/cli.ts doctor",
+    "status": "tsx scripts/forge/cli.ts status",
+    "test": "pnpm test:launcher && pnpm test:distribution && tsx --test scripts/forge/lib/**/*.test.ts studio/server/**/*.test.ts studio/client/src/lib/**/*.test.ts",
+    "test:distribution": "node --test scripts/distribution/*.test.mjs",
+    "test:launcher": "node --test scripts/launcher/*.test.mjs",
+    "test:launcher:coverage": "node --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-functions=80 --test-coverage-branches=80 --test-coverage-include='scripts/launcher/lib.mjs' scripts/launcher/*.test.mjs",
+    "test:coverage": "node --import tsx --test --experimental-test-coverage --test-coverage-lines=80 --test-coverage-functions=80 --test-coverage-branches=80 --test-coverage-include='studio/server/lib/mutation.ts' --test-coverage-include='studio/server/lib/promptMutations.ts' --test-coverage-include='studio/server/lib/logMutations.ts' --test-coverage-include='studio/server/lib/anchorMutations.ts' --test-coverage-include='studio/server/lib/revision.ts' studio/server/**/*.test.ts",
+    "test:e2e": "node scripts/e2e/run.mjs",
+    "typecheck": "tsc --noEmit && tsc -p studio/tsconfig.server.json --noEmit && tsc -p studio/tsconfig.client.json --noEmit",
+    "lint": "node bin/forge lint",
+    "preview": "node scripts/launch-studio.mjs",
+    "distribution:check": "node scripts/distribution/check.mjs",
+    "distribution:create": "node scripts/distribution/create-snapshot.mjs",
+    "studio": "concurrently -n srv,web -c magenta,cyan \"pnpm studio:server\" \"pnpm studio:client\"",
+    "studio:server": "tsx watch studio/server/main.ts",
+    "studio:client": "vite --config studio/client/vite.config.ts"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.13.7",
+    "commander": "^12.1.0",
+    "gray-matter": "^4.0.3",
+    "hono": "^4.12.25",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.30.4",
+    "yaml": "^2.6.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.1.0",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}

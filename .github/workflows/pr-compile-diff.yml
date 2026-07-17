@@ -1,0 +1,123 @@
+name: PR compile diff
+
+on:
+  pull_request:
+    paths:
+      - "characters/**"
+      - "lexicon/**"
+      - "scripts/forge/**"
+      - "scripts/ci/compile-*.mjs"
+      - "!**/*.md.bak"
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: pr-compile-diff-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  diff:
+    name: compile diff (base → head)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v6
+        with:
+          version: 10.32.1
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install deps (head)
+        run: pnpm install --frozen-lockfile
+
+      - name: Snapshot HEAD
+        run: node scripts/ci/compile-snapshot.mjs /tmp/head.json
+        continue-on-error: true
+
+      - name: Swap content to BASE ref
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          set -e
+          rm -rf characters lexicon
+          mkdir -p characters lexicon
+          # Detect whether BASE has each content dir, so an absent dir
+          # doesn't silently masquerade as "all entries added".
+          has_characters=$(git ls-tree --name-only "$BASE_SHA" -- characters | grep -c . || true)
+          has_lexicon=$(git ls-tree --name-only "$BASE_SHA" -- lexicon | grep -c . || true)
+          if [ "$has_characters" = "0" ] && [ "$has_lexicon" = "0" ]; then
+            echo "::warning::BASE ref has neither characters/ nor lexicon/. Snapshot will be empty."
+            echo "BASE_CONTENT_MISSING=1" >> "$GITHUB_ENV"
+          else
+            [ "$has_characters" != "0" ] && git checkout "$BASE_SHA" -- characters || echo "::warning::BASE has no characters/"
+            [ "$has_lexicon" != "0" ] && git checkout "$BASE_SHA" -- lexicon || echo "::warning::BASE has no lexicon/"
+          fi
+
+      - name: Snapshot BASE
+        run: node scripts/ci/compile-snapshot.mjs /tmp/base.json
+        continue-on-error: true
+
+      - name: Restore HEAD content
+        run: |
+          set -e
+          rm -rf characters lexicon
+          git checkout HEAD -- characters lexicon || true
+
+      - name: Ensure snapshot files exist
+        run: |
+          [ -f /tmp/head.json ] || echo '{"generated_at":"missing","entries":[],"failures":[]}' > /tmp/head.json
+          [ -f /tmp/base.json ] || echo '{"generated_at":"missing","entries":[],"failures":[]}' > /tmp/base.json
+
+      - name: Generate diff
+        run: node scripts/ci/compile-diff.mjs /tmp/base.json /tmp/head.json /tmp/diff.md
+
+      - name: Upload snapshots as artifacts
+        uses: actions/upload-artifact@v7
+        with:
+          name: compile-snapshots
+          path: |
+            /tmp/base.json
+            /tmp/head.json
+            /tmp/diff.md
+          retention-days: 14
+
+      - name: Post / update PR comment
+        uses: actions/github-script@v9
+        with:
+          script: |
+            const fs = require('fs');
+            const body = fs.readFileSync('/tmp/diff.md', 'utf8');
+            const marker = '<!-- forge:compile-diff -->';
+            const fullBody = marker + '\n' + body;
+
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              per_page: 100,
+            });
+            const existing = comments.find((c) => c.body && c.body.includes(marker));
+            if (existing) {
+              await github.rest.issues.updateComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                comment_id: existing.id,
+                body: fullBody,
+              });
+            } else {
+              await github.rest.issues.createComment({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number,
+                body: fullBody,
+              });
+            }

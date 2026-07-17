@@ -1,0 +1,266 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================================
+   base — 和紙地と墨線の世界
+   ============================================================ */
+@layer base {
+  html {
+    font-feature-settings: "palt" 1, "pkna" 1;
+  }
+
+  body {
+    font-feature-settings: "palt" 1, "pkna" 1, "ss01";
+    background-color: #faf7f0;
+    /* 微細なノイズで和紙感。CPUコストはほぼゼロ */
+    background-image:
+      radial-gradient(at 12% 18%, rgba(155, 133, 88, 0.08) 0, transparent 40%),
+      radial-gradient(at 87% 75%, rgba(92, 70, 42, 0.06) 0, transparent 45%),
+      radial-gradient(at 58% 42%, rgba(30, 20, 10, 0.04) 0, transparent 36%);
+  }
+
+  pre,
+  code {
+    font-variant-ligatures: none;
+  }
+
+  /* 和文見出しに気配程度の字間 */
+  h1,
+  h2,
+  h3 {
+    letter-spacing: 0.02em;
+  }
+
+  /* スクロールバー（Webkit）も和紙寄りに */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(58, 52, 43, 0.2);
+    border-radius: 9999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(58, 52, 43, 0.35);
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* 選択色：墨 */
+  ::selection {
+    background: rgba(35, 31, 25, 0.85);
+    color: #faf7f0;
+  }
+}
+
+/* ============================================================
+   components — 判子 / 短冊 / 巻物の比喩
+   ============================================================ */
+@layer components {
+  .studio-hero {
+    background:
+      linear-gradient(120deg, rgba(241, 238, 229, 0.96), rgba(223, 230, 203, 0.88)),
+      repeating-linear-gradient(90deg, transparent 0 54px, rgba(111, 125, 69, 0.08) 54px 55px);
+    box-shadow: 0 18px 50px -38px rgba(38, 59, 69, 0.7);
+  }
+  .studio-accent-bands {
+    height: 10px;
+    background: repeating-linear-gradient(90deg, #6f7d45 0 72px, #c99a3d 72px 116px, #79543a 116px 152px, #263b45 152px 190px);
+  }
+  .studio-count-card {
+    @apply flex min-w-32 flex-col items-center rounded-lg border border-[#a79769]/50 bg-white/60 px-5 py-3;
+  }
+  .studio-count-card strong { @apply font-display text-4xl text-[#263b45]; }
+  .studio-count-card span { @apply text-xs text-[#79543a]; }
+  .studio-count-card small { @apply mt-2 border-t border-[#b8ab83]/50 pt-2 font-mono text-[10px] text-[#6f7d45]; }
+  .character-card {
+    @apply rounded-xl border border-[#b8ab83]/60 bg-white/70;
+    box-shadow: 0 12px 30px -24px rgba(38, 59, 69, 0.75);
+  }
+  .character-card:hover { border-color: rgba(111, 125, 69, 0.8); box-shadow: 0 18px 36px -25px rgba(38, 59, 69, 0.9); }
+  .visual-panel { @apply rounded-xl border border-[#b8ab83]/60 bg-white/70; }
+  /* ── カード：和紙 1 枚の短冊 ───────────────────────── */
+  .washi {
+    @apply relative rounded-md border border-sumi-100/70 bg-white/60 backdrop-blur-[1px];
+    box-shadow:
+      0 1px 0 rgba(35, 31, 25, 0.03),
+      0 8px 24px -18px rgba(35, 31, 25, 0.18);
+  }
+  .washi-solid {
+    @apply relative rounded-md border border-sumi-100 bg-white;
+    box-shadow:
+      0 1px 0 rgba(35, 31, 25, 0.03),
+      0 12px 32px -22px rgba(35, 31, 25, 0.22);
+  }
+
+  /* ── 見出しラベル：枠線＋字間 ─────────────────────── */
+  .kanji-label {
+    @apply text-[10px] font-medium uppercase text-sumi-300;
+    letter-spacing: 0.22em;
+  }
+
+  /* ── 判子バッジ ────────────────────────────────── */
+  .hanko {
+    @apply inline-flex shrink-0 items-center justify-center rounded-sm px-2 py-0.5 font-serif text-[11px] font-bold tracking-wa-heading;
+    box-shadow: inset 0 0 0 1px currentColor;
+  }
+  .hanko-draft {
+    @apply hanko text-sumi-300 bg-washi-100;
+  }
+  .hanko-experimental {
+    @apply hanko text-wakakusa-500 bg-wakakusa-100/60;
+  }
+  .hanko-stable {
+    @apply hanko text-kincha-500 bg-kincha-100/70;
+  }
+  .hanko-shu {
+    @apply hanko text-shu-500 bg-shu-50;
+  }
+  .hanko-ai {
+    @apply hanko text-ai-500 bg-ai-100/80;
+  }
+
+  /* ── 丸印判子（角丸ではなく真円） ─────────────────── */
+  .seal {
+    @apply inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-full font-serif text-[11px] font-bold leading-none tracking-wa-title;
+    box-shadow: inset 0 0 0 1.5px currentColor;
+    letter-spacing: 0;
+  }
+
+  /* ── 家紋風 bullet ────────────────────────────── */
+  .kamon-bullet::before {
+    content: "◆";
+    @apply mr-1.5 text-shu-500;
+    font-size: 0.6em;
+    vertical-align: 0.25em;
+  }
+
+  /* ── セクション見出し（小） ─────────────────────── */
+  .h-section {
+    @apply text-[10px] font-medium uppercase text-sumi-300;
+    letter-spacing: 0.22em;
+  }
+
+  /* ── セクション区切り：墨の細線 ───────────────────── */
+  .sumi-divider {
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(35, 31, 25, 0.18) 12%,
+      rgba(35, 31, 25, 0.18) 88%,
+      transparent 100%
+    );
+    height: 1px;
+    width: 100%;
+  }
+
+  /* ── ボタン：墨の印 ─────────────────────────── */
+  .btn-sumi {
+    @apply inline-flex items-center gap-1.5 rounded-sm border border-sumi-900 bg-sumi-900 px-3 py-1.5 font-serif text-sm font-medium text-washi-50 transition hover:bg-sumi-700 disabled:opacity-40;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center gap-1.5 rounded-sm border border-sumi-100 bg-transparent px-3 py-1.5 text-sm font-medium text-sumi-500 transition hover:border-sumi-300 hover:text-sumi-900;
+  }
+
+  /* ── pre ブロック（プロンプト / YAML） ────────────── */
+  .scroll-box {
+    @apply rounded-sm border border-sumi-100 bg-washi-100/60 p-3 font-mono text-[13px] leading-relaxed text-sumi-700;
+  }
+
+  /* ── 入力系 ───────────────────────────────── */
+  .wa-select {
+    @apply w-full rounded-sm border border-sumi-100 bg-white/80 px-3 py-2 text-sm text-sumi-700 shadow-sm focus:border-ai-300 focus:outline-none focus:ring-2 focus:ring-ai-100;
+  }
+  .wa-input,
+  .wa-textarea {
+    @apply w-full rounded-sm border border-sumi-100 bg-white/80 px-3 py-2 text-sm text-sumi-700 shadow-sm outline-none transition placeholder:text-sumi-200 focus:border-ai-300 focus:ring-2 focus:ring-ai-100;
+  }
+  .wa-textarea {
+    @apply resize-y font-mono leading-relaxed;
+  }
+
+  .forge-steps {
+    @apply grid grid-cols-2 overflow-hidden rounded-md border border-sumi-100 bg-white/50 sm:grid-cols-4;
+  }
+  .forge-step {
+    @apply relative flex items-center gap-3 border-b border-r border-sumi-100 px-4 py-3 last:border-r-0 sm:border-b-0;
+  }
+  .forge-step-mark {
+    @apply flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-sumi-100 font-display text-sm text-sumi-300;
+  }
+  .forge-step-label {
+    @apply block font-serif text-sm text-sumi-500;
+  }
+  .forge-step-hint {
+    @apply block text-[9px] uppercase tracking-wa-heading text-sumi-200;
+  }
+  .forge-step[data-state="active"] {
+    @apply bg-shu-50/70;
+  }
+  .forge-step[data-state="active"] .forge-step-mark {
+    @apply border-shu-500 bg-shu-500 text-white;
+  }
+  .forge-step[data-state="active"] .forge-step-label {
+    @apply text-sumi-900;
+  }
+  .forge-step[data-state="done"] .forge-step-mark {
+    @apply border-wakakusa-300 text-wakakusa-700;
+  }
+
+  .editor-backdrop {
+    @apply fixed inset-0 z-50 flex items-center justify-center bg-sumi-900/35 p-3 backdrop-blur-[2px] sm:p-6;
+  }
+  .editor-dialog {
+    @apply w-full max-w-6xl overflow-hidden rounded-md border border-sumi-100 bg-washi-50 shadow-2xl;
+  }
+}
+
+/* ============================================================
+   utilities — 和モダンの効果をちょっとだけ
+   ============================================================ */
+@layer utilities {
+  /* タイトル専用（Noto Serif JP 明朝でクラシック） */
+  .font-display {
+    font-family: "Noto Serif JP", Georgia, "Hiragino Mincho ProN", serif;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  /* 縦書き（狭幅では使わない想定） */
+  .tategaki {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
+  /* 墨線アニメ：下線が左からすっと伸びる */
+  .ink-underline {
+    position: relative;
+  }
+  .ink-underline::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 1px;
+    background: currentColor;
+    transition: width 240ms ease;
+  }
+  .ink-underline:hover::after,
+  .ink-underline.is-active::after {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

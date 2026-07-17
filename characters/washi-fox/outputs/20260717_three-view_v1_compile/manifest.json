@@ -1,0 +1,23 @@
+{
+  "run_id": "20260717_three-view_v1_compile",
+  "character": "washi-fox",
+  "variant_id": "three-view",
+  "base_version": "v1",
+  "base_sha": "4c49471",
+  "tool": "prompt-compile",
+  "tool_version": "e96c2a4",
+  "prompt_file": "prompts/variants/three-view.md",
+  "lexicon_used": [
+    "lexicon/camera.md#three-quarter-orthographic",
+    "lexicon/lighting.md#overcast-diffused"
+  ],
+  "references": [],
+  "source_entities": [],
+  "seed": null,
+  "compiled_prompt": "small original fox guide mascot, two-and-a-half-head-tall chibi proportions,\nsoft white fur with a subtle handmade washi-paper fiber texture,\nlarge rounded amber eyes and a gentle expression,\nindigo blue ear tips and tail tip,\nthin vermilion bookmark cord tied loosely around the neck,\nsmall cylindrical scroll case worn at the side,\nsimple folded-paper-inspired shapes, clean readable silhouette,\nwarm restrained Japanese storybook illustration, no existing franchise likeness\n\nthree-view character sheet showing front, side, and back,\nneutral standing pose, full body visible in every view,\nconsistent proportions, colors, scroll case, bookmark cord, and single tail,\nplain light background, generous spacing, no labels\n\nthree-quarter orthographic view, neutral pose, character sheet framing,\nfull body visible, subject centered, flat perspective\n\novercast diffused lighting, even illumination with no harsh shadows,\nneutral color temperature, soft wraparound light\n",
+  "compiled_negative": "photorealistic animal, realistic fur, aggressive expression, complex armor, modern logo, existing franchise character, text, watermark, signature, blurry, low quality, extra limbs, duplicate tail, broken anatomy, inconsistent design between views, dynamic action pose, perspective distortion, cropped body, multiple characters, text labels, captions, decorative frame\n",
+  "outputs": [],
+  "thumbnails": [],
+  "created_at": "2026-07-17T13:22:21+09:00",
+  "created_by": "forge-cli@0.1.0"
+}

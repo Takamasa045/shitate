@@ -1,0 +1,52 @@
+# Shitate .gitignore
+#
+# 原則:
+# - プレーンテキスト（md/yaml/json）は全てコミット
+# - キャラクター画像は個人利用としてコミットしない
+# - outputs は prompt / negative / manifest のみコミット、画像・動画・音声は除外
+
+# ============================================================
+# OS / editor
+# ============================================================
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.idea/
+.vscode/
+.claude/settings.local.json
+
+# ============================================================
+# references/ — 画像はすべて除外
+# ============================================================
+characters/*/references/images/*
+!characters/*/references/images/.gitkeep
+
+# ============================================================
+# outputs/ — 生成実ファイルは除外、テキストと manifest だけ残す
+#   ホワイトリスト:
+#     - manifest.json（メタ情報、再現情報）
+#     - prompt.txt / negative.txt（§4.5 コンパイル済みプロンプト）
+#     - .gitkeep
+# ============================================================
+characters/*/outputs/*/*
+!characters/*/outputs/*/manifest.json
+!characters/*/outputs/*/prompt.txt
+!characters/*/outputs/*/negative.txt
+!characters/*/outputs/.gitkeep
+
+# ============================================================
+# studio (Web UI) ビルド成果物
+# ============================================================
+studio/**/dist/
+studio/**/.vite/
+playwright-report/
+test-results/
+
+# ============================================================
+# 一時ファイル
+# ============================================================
+*.tmp
+*.log
+.cache/
+node_modules/
