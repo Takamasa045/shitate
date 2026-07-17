@@ -65,10 +65,13 @@ pnpm distribution:create -- ../shitate-distribution
 
 ## 5. 初めて使う人の動線
 
-- [ ] Macで「ZIPを展開 → `Shitate Studio.command` を右クリックして開く」を確認する
+- [ ] 「clone、またはFork後にclone」を最初の入口として案内する
+- [ ] cloneしたフォルダをCodex / Claude Codeで開く案内を確認する
+- [ ] READMEの自然言語プロンプトだけで環境確認とランチャー起動まで依頼できる
 - [ ] 初回セットアップ後にブラウザが開く
 - [ ] 2回目は依存関係の再インストールなしで起動する
-- [ ] `Control + C` で終了できる
+- [ ] 自然言語で終了を依頼でき、手動では `Control + C` で終了できる
+- [ ] AIを使わない場合のMacランチャー手順も補足として残す
 - [ ] Windows / Linux では `node scripts/launch-studio.mjs` で起動できる
 
 ## 6. 公開直前

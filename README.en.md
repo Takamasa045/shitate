@@ -27,20 +27,27 @@ Shitate  (this repo)
 external generator (Nano Banana / PixVerse / …)
 ```
 
-## Quick tour
+## Start with Codex or Claude Code
 
-### macOS: open the Studio launcher
+1. Clone [this repository](https://github.com/Takamasa045/shitate). If you want your own GitHub copy, fork it first and clone your fork.
+2. Open the cloned `shitate` folder in [Codex](https://openai.com/codex/get-started/) or [Claude Code](https://code.claude.com/docs/en/desktop-quickstart).
+3. Paste this request into the chat:
 
-1. Install [Node.js 22 or newer](https://nodejs.org/en/download).
-2. [Download Shitate as a ZIP](https://github.com/Takamasa045/shitate/archive/refs/heads/main.zip) and extract it.
-3. Control-click **`Shitate Studio.command`**, choose **Open**, and confirm once.
+```text
+Set up this Shitate repository so I can use it.
+Read AGENTS.md and README.md, check the required environment, and explain anything that is missing.
+When ready, start Shitate Studio with the included launcher and guide me through the sample character, Washi Fox.
+Then ask me one question at a time to create my first character.
+Do not generate images until I explicitly ask you to.
+Finish by giving me one natural-language request I can use next in Codex or Claude Code.
+```
 
-The launcher installs missing dependencies, starts the local Studio, and opens the browser automatically. Character data stays inside this repository. See [QUICKSTART.md](QUICKSTART.md) for troubleshooting.
+Codex or Claude Code can check the environment, prepare dependencies, start the included launcher, and guide you through the first session. Character data stays inside this repository. See [QUICKSTART.md](QUICKSTART.md) for the full walkthrough and manual-launch fallback.
 
-### Terminal
+### Terminal fallback
 
 ```bash
-git clone <this-repo>
+git clone https://github.com/Takamasa045/shitate.git
 cd shitate
 node scripts/launch-studio.mjs
 

@@ -1,34 +1,54 @@
-# Shitateを最初の5分で試す
+# ShitateをCodex / Claude Codeで始める
 
-このガイドでは、Shitate Studioを開き、サンプルキャラクターの設定と生成用プロンプトを見るところまで進みます。
+このガイドでは、cloneしたShitateをCodexまたはClaude Codeで開き、自然な言葉だけでStudioの起動と最初の案内を頼みます。
 知識wikiの makimono や画像生成サービスは必要ありません。
 
-## Mac：ランチャーで開く
+## 1. Shitateのリポジトリを用意する
 
-### 1. Node.jsを準備する
+[GitHubのShitateリポジトリ](https://github.com/Takamasa045/shitate)をcloneします。
+自分のGitHub上にコピーを持ちたい場合は、先に「Fork」を押し、そのForkをcloneします。
 
-[Node.jsのダウンロードページ](https://nodejs.org/ja/download)から、Node.js 22以上をインストールします。
-すでに入っている場合は、そのまま次へ進めます。
+- **Fork** — 自分のGitHub上にShitateのコピーを作ること
+- **clone** — GitHubのリポジトリを、PCで使える作業用フォルダにすること
 
-### 2. Shitateをダウンロードする
+ターミナルを使う場合のcloneコマンドは次のとおりです。GitHub Desktopなどを使ってcloneしても構いません。
 
-[Shitate の ZIP](https://github.com/Takamasa045/shitate/archive/refs/heads/main.zip)をダウンロードし、ファイルをダブルクリックして展開します。
+```bash
+git clone https://github.com/Takamasa045/shitate.git
+```
 
-GitHubの画面から行う場合は、緑色の「Code」ボタンから「Download ZIP」を選びます。
+Forkした場合は、上のURLを自分のForkのURLへ置き換えます。
 
-Gitを使える方は、リポジトリをcloneしても構いません。
+## 2. Codex / Claude Codeでフォルダを開く
 
-### 3. ランチャーを開く
+- **Codex** — 「Add project」などから、cloneした `shitate` フォルダまたはGitリポジトリを選びます
+- **Claude Code Desktop** — 「Code」→「Local」→「Select folder」から、cloneした `shitate` フォルダを選びます
+- **Claude Code CLI** — Shitateフォルダで `claude` を起動します
 
-展開したShitateフォルダの中にある **`Shitate Studio.command`** を探します。
+[Codexの公式スタートガイド](https://openai.com/codex/get-started/)と[Claude Code Desktopの公式ガイド](https://code.claude.com/docs/en/desktop-quickstart)にも、フォルダを選ぶ画面が掲載されています。
 
-初回は、ファイルを右クリックして「開く」を選んでください。
-確認画面が出たら、もう一度「開く」を選びます。
+## 3. 最初の依頼を貼り付ける
 
-ターミナルが開き、初回セットアップが始まります。必要なファイルをダウンロードするため、数分かかることがあります。
-準備が終わると、ブラウザで `http://127.0.0.1:5180` が自動的に開きます。
+Codex / Claude Codeのチャットへ、次の文章をそのまま貼り付けます。
 
-2回目からは `Shitate Studio.command` のダブルクリックだけで起動できます。
+```text
+このShitateリポジトリを使える状態にセットアップしてください。
+AGENTS.mdとREADME.mdを読み、必要な環境を確認して、不足があれば分かりやすく案内してください。
+準備ができたら、同梱のランチャーでShitate Studioを起動し、サンプル「和紙狐」で基本操作を案内してください。
+その後、私の最初のキャラクター作成を質問しながら進めてください。
+画像は、私が明示するまで生成しないでください。
+最後に、次に私がCodex / Claude Codeへ頼める一言を示してください。
+```
+
+Codex / Claude Codeが次を進めます。
+
+- `AGENTS.md`を読み、このリポジトリの安全ルールを確認する
+- Node.js 22以上など、起動に必要な環境を確認する
+- 不足する依存関係を準備する
+- 同梱ランチャーからShitate Studioを起動する
+- ブラウザが開いたら、サンプルから操作を案内する
+
+ファイル変更やコマンド実行の許可を求められた場合は、内容を確認して許可してください。
 
 ## Studioで一巡する
 
@@ -77,12 +97,15 @@ Shitate は画像を自動生成せず、画像やプロンプトを自動で外
 
 ### 4. 終了する
 
-ランチャーが開いたターミナルで `Control + C` を押します。
-確認が出た場合は終了を選び、ターミナルを閉じます。
+Codex / Claude Codeに、次のように頼めます。
+
+> Shitate Studioを終了して。保存されていない変更がないかも確認して。
+
+自分で終了する場合は、ランチャーが開いたターミナルで `Control + C` を押します。
 
 ## 保存場所とバックアップ
 
-作成した内容は、すべて展開した Shitate フォルダ内に保存されます。
+作成した内容は、すべてcloneした Shitate フォルダ内に保存されます。
 
 - キャラクター設定: `characters/<キャラクターID>/`
 - 保存したプロンプト: その中の `outputs/`
@@ -91,13 +114,35 @@ Shitate は画像を自動生成せず、画像やプロンプトを自動で外
 Shitate フォルダを丸ごとコピーすれば、設定と履歴をまとめてバックアップできます。
 画像生成サービス側にだけ保存した画像は含まれないため、必要な画像は別途保管してください。
 
-## AIアシスタントに案内してもらう
+## 次回からの頼み方
 
-Codex や Claude Code でこのフォルダを開いた場合は、最初に次のように頼めます。
+一度セットアップした後は、ShitateのフォルダをCodex / Claude Codeで開き、次のように頼めます。
 
-> この Shitate フォルダを確認して、最初のキャラクター作成を案内してください。画像は、私が明示するまで生成しないでください。
+- 「Shitate Studioを起動して、前回の続きから案内して」
+- 「新しいキャラクターを作りたい。必要なことを一つずつ質問して」
+- 「前回の日録を読んで、次に改善することを提案して」
+- 「このキャラクターの三面図用プロンプトを調合して」
+
+## AIを使わずに起動する場合
+
+通常はCodex / Claude Codeに「Studioを起動して」と頼めば十分です。
+自分で起動したい場合だけ、次の方法を使います。
+
+### Mac
+
+1. [Node.js 22以上](https://nodejs.org/ja/download)をインストールします
+2. Shitateフォルダの `Shitate Studio.command` を右クリックして「開く」を選びます
+3. 準備が終わると、ブラウザで `http://127.0.0.1:5180` が開きます
+
+2回目からは `Shitate Studio.command` のダブルクリックだけで起動できます。
 
 ## うまく起動しないとき
+
+まず、表示されたエラーをCodex / Claude Codeへそのまま渡してください。
+
+> Shitate Studioが起動しません。このエラーを確認して、必要な対応を進めてください。個人データや画像は外部へ送らないでください。
+
+自分で確認する場合は、次の項目を参照してください。
 
 ### 「Node.jsが見つかりません」と表示される
 
